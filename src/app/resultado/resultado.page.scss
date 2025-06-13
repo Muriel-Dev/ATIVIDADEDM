@@ -1,0 +1,75 @@
+.success-container.estilizado {
+  text-align: center;
+  padding: 24px;
+  background: #e0f7e9;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.success-icon.grande {
+  font-size: 64px;
+  margin-bottom: 12px;
+}
+
+.success-title {
+  color: #2dd36f;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.success-subtitle {
+  color: #444;
+  font-size: 1rem;
+}
+
+.resumo-card.sombra-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.resumo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 1rem;
+}
+
+.resumo-label {
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.economia-valor {
+  color: #2dd36f;
+  font-weight: bold;
+}
+
+.total {
+  margin-top: 12px;
+  font-size: 1.1rem;
+}
+
+.total-label,
+.total-valor {
+  font-weight: bold;
+  color: #000;
+}
+
+.divisor {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 12px 0;
+}
+
+.acoes-container {
+  margin-top: 32px;
+}
+
+.botao-principal.arredondado {
+  border-radius: 12px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}

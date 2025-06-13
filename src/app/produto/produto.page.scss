@@ -1,0 +1,118 @@
+:host {
+  --ion-background-color: #121212;
+  --ion-text-color: #ffffff;
+}
+
+.produto-container {
+  padding: 16px;
+}
+
+.produto-header-card,
+.detalhes-card,
+.quantidade-card {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 16px;
+}
+
+.produto-codigo {
+  font-size: 0.9rem;
+  color: #aaaaaa;
+}
+
+.produto-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 8px 0 16px;
+  color: #ffffff;
+}
+
+.precos-container .label {
+  font-size: 0.9rem;
+  color: #bbbbbb;
+  margin-right: 4px;
+}
+
+.preco-normal .valor {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+.preco-promocional .valor {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.desconto-badge {
+  background-color: #2e7d32;
+  color: white;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+
+.economia {
+  font-size: 0.9rem;
+  color: #81c784;
+  margin-top: 8px;
+}
+
+.detalhes-card ion-card-title,
+.quantidade-card ion-card-title {
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.detalhes-texto {
+  font-size: 1rem;
+  color: #cccccc;
+}
+
+.quantidade-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.quantidade-valor {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.subtotal {
+  text-align: center;
+  margin-top: 12px;
+  color: #ffffff;
+}
+
+.botoes-acao {
+  padding: 12px;
+}
+
+.botao-comprar {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.erro-container {
+  text-align: center;
+  padding: 24px;
+}
+
+.erro-icon {
+  font-size: 3rem;
+  color: #ff6f61;
+  margin-bottom: 12px;
+}
+
+.loading-container {
+  padding: 24px;
+}

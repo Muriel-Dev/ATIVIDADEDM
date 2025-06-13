@@ -1,0 +1,66 @@
+.container-produtos {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.produto-card.estilizado {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.produto-card.estilizado:hover {
+  transform: scale(1.02);
+}
+
+.codigo-produto {
+  font-weight: 600;
+  color: #888;
+}
+
+.descricao-produto {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.preco-container {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.preco-normal {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.preco-desconto {
+  color: #2dd36f;
+  font-weight: bold;
+}
+
+.desconto-percentual {
+  margin-left: 8px;
+  color: #eb445a;
+  font-size: 0.9rem;
+}
+
+.botoes-container {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.icone-carrinho {
+  font-size: 22px;
+}
+
+.carrinho-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}

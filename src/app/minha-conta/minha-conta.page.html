@@ -1,0 +1,120 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Minha Conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Minha Conta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="carregando" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando dados...</p>
+  </div>
+
+  <div *ngIf="!carregando && !cliente" class="empty-state">
+    <ion-icon name="person-outline" class="empty-icon"></ion-icon>
+    <h2>Nenhum cliente cadastrado</h2>
+    <p>
+      Para acessar todos os recursos do aplicativo, é necessário realizar o
+      cadastro.
+    </p>
+
+    <ion-button
+      expand="block"
+      color="primary"
+      class="cadastro-btn"
+      routerLink="/cliente-cadastro"
+    >
+      <ion-icon name="person-add-outline" slot="start"></ion-icon>
+      Cadastrar Cliente
+    </ion-button>
+  </div>
+
+  <div *ngIf="!carregando && cliente" class="cliente-info">
+    <div class="profile-header">
+      <div class="avatar">
+        <ion-icon name="person" class="avatar-icon"></ion-icon>
+      </div>
+      <h2>{{ cliente.nome }}</h2>
+      <p>{{ cliente.telefone }}</p>
+    </div>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          Dados Pessoais
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Nome Completo</h3>
+            <p>{{ cliente.nome }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Telefone</h3>
+            <p>{{ formatarTelefone(cliente.telefone) }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="location-outline" slot="start"></ion-icon>
+          Endereço
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>
+            <h3>CEP</h3>
+            <p>{{ formatarCEP(cliente.cep) }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Endereço</h3>
+            <p>{{ cliente.endereco }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Bairro</h3>
+            <p>{{ cliente.bairro }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Cidade/Estado</h3>
+            <p>{{ cliente.cidade }}/{{ cliente.estado }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button
+      expand="block"
+      color="secondary"
+      class="edit-btn"
+      [routerLink]="['/cliente-cadastro']"
+      [queryParams]="{ edit: true }"
+    >
+      <ion-icon name="create-outline" slot="start"></ion-icon>
+      Editar Dados
+    </ion-button>
+  </div>
+</ion-content>

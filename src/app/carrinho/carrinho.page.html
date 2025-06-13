@@ -1,0 +1,163 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="cart" slot="start"></ion-icon>
+      Carrinho de Compras
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="!carrinhoVazio">
+      <ion-button fill="clear" (click)="limparCarrinho()">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Carrinho</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Loading -->
+  <div *ngIf="carregando" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Carregando carrinho...</p>
+  </div>
+
+  <!-- Carrinho Vazio -->
+  <div *ngIf="!carregando && carrinhoVazio" class="empty-cart">
+    <ion-icon name="cart-outline" class="empty-icon"></ion-icon>
+    <h2>Seu carrinho está vazio</h2>
+    <p>Adicione alguns produtos para continuar</p>
+    <ion-button expand="block" fill="solid" (click)="continuarComprando()">
+      <ion-icon name="storefront-outline" slot="start"></ion-icon>
+      Continuar Comprando
+    </ion-button>
+  </div>
+
+  <!-- Lista de Itens -->
+  <div *ngIf="!carregando && !carrinhoVazio">
+    <!-- Header com economia -->
+    <ion-card *ngIf="temDesconto" class="savings-card">
+      <ion-card-content>
+        <div class="savings-content">
+          <ion-icon name="pricetag" color="success"></ion-icon>
+          <div>
+            <h3>Você está economizando</h3>
+            <p class="savings-amount">{{ formatarMoeda(valorEconomizado) }}</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de Produtos -->
+    <ion-list>
+      <ion-item-sliding *ngFor="let item of itensCarrinho; let i = index">
+        <ion-item button (click)="verDetalheProduto(item.produto)">
+          
+          <ion-label>
+            <h2>{{ item.produto.descricao }}</h2>
+            <p class="product-details">{{ item.produto.detalhes }}</p>
+            
+            <!-- Preços -->
+            <div class="price-container">
+              <span *ngIf="item.produto.valorNormal && item.produto.valorNormal > item.produto.valorComDesconto" 
+                    class="original-price">
+                {{ formatarMoeda(item.produto.valorNormal) }}
+              </span>
+              <span class="current-price">
+                {{ formatarMoeda(item.produto.valorComDesconto) }}
+              </span>
+              <span *ngIf="item.produto.valorNormal && item.produto.valorNormal > item.produto.valorComDesconto" 
+                    class="discount-badge">
+                -{{ calcularDesconto(item.produto.valorNormal, item.produto.valorComDesconto) }}%
+              </span>
+            </div>
+            
+            <!-- Controles de Quantidade -->
+            <div class="quantity-controls" (click)="$event.stopPropagation()">
+              <ion-button fill="clear" size="small" (click)="diminuirQuantidade(i)">
+                <ion-icon name="remove" slot="icon-only"></ion-icon>
+              </ion-button>
+              
+              <span class="quantity">{{ item.quantidade }}</span>
+              
+              <ion-button fill="clear" size="small" (click)="aumentarQuantidade(i)">
+                <ion-icon name="add" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-label>
+          
+          <ion-note slot="end" class="subtotal">
+            {{ formatarMoeda(item.subtotal) }}
+          </ion-note>
+        </ion-item>
+
+        <!-- Sliding Options -->
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="confirmarRemocaoItem(i)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Resumo da Compra -->
+    <ion-card class="summary-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="receipt-outline"></ion-icon>
+          Resumo da Compra
+        </ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div class="summary-line">
+          <span>Subtotal ({{ quantidadeTotal }} {{ quantidadeTotal === 1 ? 'item' : 'itens' }})</span>
+          <span>{{ formatarMoeda(subtotalCarrinho) }}</span>
+        </div>
+        
+        <div class="summary-line">
+          <span>Frete</span>
+          <span>{{ formatarMoeda(valorFrete) }}</span>
+        </div>
+        
+        <div *ngIf="temDesconto" class="summary-line discount-line">
+          <span>Economia</span>
+          <span class="discount-value">-{{ formatarMoeda(valorEconomizado) }}</span>
+        </div>
+        
+        <ion-item lines="none" class="total-line">
+          <ion-label>
+            <h2><strong>Total</strong></h2>
+          </ion-label>
+          <ion-note slot="end" class="total-value">
+            <strong>{{ formatarMoeda(totalGeral) }}</strong>
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botões de Ação -->
+    <div class="action-buttons">
+      <ion-button expand="block" fill="outline" (click)="continuarComprando()">
+        <ion-icon name="storefront-outline" slot="start"></ion-icon>
+        Continuar Comprando
+      </ion-button>
+      
+      <ion-button expand="block" fill="solid" color="success" (click)="finalizarCompra()">
+        <ion-icon name="card-outline" slot="start"></ion-icon>
+        Finalizar Compra - {{ formatarMoeda(totalGeral) }}
+      </ion-button>
+    </div>
+
+    <!-- Espaço extra para garantir que o conteúdo não fique atrás de elementos fixos -->
+    <div style="height: 20px;"></div>
+  </div>
+</ion-content>

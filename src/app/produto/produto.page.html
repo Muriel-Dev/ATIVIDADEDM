@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="voltarParaInicio()" defaultHref="/tabs/inicio"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalhes do Produto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="carregando" class="loading-container">
+    <ion-card>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 100%; height: 200px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="!carregando && produto" class="produto-container">
+    
+    <ion-card class="produto-header-card">
+      <ion-card-content>
+        <div class="produto-codigo">{{ produto?.codigo || 'N/A' }}</div>
+        <h1 class="produto-titulo">{{ produto?.descricao || 'Produto sem descrição' }}</h1>
+        
+        <div class="precos-container" *ngIf="temDesconto">
+          <div class="preco-normal">
+            <span class="label">De:</span>
+            <span class="valor">{{ formatarMoeda(produto!.valorNormal) }}</span>
+          </div>
+          
+          <div class="preco-promocional">
+            <span class="label">Por apenas:</span>
+            <span class="valor">{{ formatarMoeda(produto!.valorComDesconto) }}</span>
+            <span class="desconto-badge">
+              {{ calcularDesconto(produto!.valorNormal, produto!.valorComDesconto) }}% OFF
+            </span>
+          </div>
+          
+          <div class="economia">
+            Você economiza: {{ formatarMoeda(produto!.valorNormal - produto!.valorComDesconto) }}
+          </div>
+        </div>
+
+        <div class="precos-container" *ngIf="temPrecoUnico">
+          <div class="preco-promocional">
+            <span class="label">Preço:</span>
+            <span class="valor">{{ formatarMoeda(produto!.valorComDesconto) }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="detalhes-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Detalhes do Produto
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="detalhes-texto">{{ produto?.detalhes || 'Detalhes não disponíveis para este produto.' }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="quantidade-card">
+      <ion-card-header>
+        <ion-card-title>Quantidade</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="quantidade-selector">
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="diminuirQuantidade()"
+            [disabled]="quantidade <= 1">
+            <ion-icon name="remove"></ion-icon>
+          </ion-button>
+          
+          <span class="quantidade-valor">{{ quantidade || 1 }}</span>
+          
+          <ion-button 
+            fill="outline" 
+            size="small" 
+            (click)="aumentarQuantidade()">
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+        </div>
+        
+        <div class="subtotal">
+          <strong>Subtotal: {{ formatarMoeda(calcularSubtotal()) }}</strong>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <div *ngIf="!carregando && !produto" class="erro-container">
+    <ion-card>
+      <ion-card-content class="text-center">
+        <ion-icon name="alert-circle-outline" class="erro-icon"></ion-icon>
+        <h2>Produto não encontrado</h2>
+        <p>O produto solicitado não foi encontrado em nosso catálogo.</p>
+        <ion-button (click)="voltarParaInicio()" fill="solid">
+          Voltar à Lista de Produtos
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
+
+<ion-footer *ngIf="produto && !carregando" class="ion-no-border">
+  <ion-toolbar>
+    <div class="botoes-acao">
+      <ion-button 
+        expand="block" 
+        fill="solid" 
+        color="success"
+        (click)="comprarAgora()"
+        [disabled]="!produto"
+        class="botao-comprar">
+        <ion-icon name="cart" slot="start"></ion-icon>
+        Comprar Agora
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
